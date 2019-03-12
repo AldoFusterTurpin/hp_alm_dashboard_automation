@@ -1,0 +1,11 @@
+http://docs.python-requests.org/en/master/user/quickstart/
+
+https://admhelp.microfocus.com/alm/en/12.60/api_refs/REST/Content/REST_API/Authenticate.htm?tocpath=Working%20with%20the%20API%7CHow%20Do%20I...%7CAuthenticate%7C_____0
+
+https://admhelp.microfocus.com/alm/en/12.60/api_refs/REST/Content/REST_API/Authenticate_LWSSO.html#Non-Web_Application_Authentication
+
+https://admhelp.microfocus.com/alm/en/12.60/api_refs/REST_TECH_PREVIEW/ALM_REST_API_TP.html#REST_API_Tech_Preview/REST/alm-authenticate.html
+
+https://community.microfocus.com/t5/Quality-Center-ALM-User/Error-401-QCSession-cookie-missing-from-request/td-p/956295
+
+http://docs.python-requests.org/en/master/api/#sessionapi

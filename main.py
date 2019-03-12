@@ -1,5 +1,6 @@
 import requests
 
+
 with requests.Session() as s:
     in_file = open("credentials.txt", "r")
     username = in_file.readline().strip()
