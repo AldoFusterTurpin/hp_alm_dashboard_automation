@@ -4,12 +4,13 @@ import requests
 
 
 def get_defect_printos(session, start_index: int = 0):
+    # important utf8 encoding
     return session.get(url="https://alm-1.azc.ext.hp.com/qcbin/rest/domains/IPG_GIB/projects/LFP_Programs/defects",
-                       params={'query': "{user-90['PrintOS']}"}).text
+                       params={'query': "{user-90['PrintOS']}"}).text.encode('utf8')
 
 
 def get_defect_printos_and_write_files(session, out_file_name: str, start_index: int = 0):
-    with open(out_file_name, "w") as out_file:
+    with open(out_file_name, "wb") as out_file:
         out_file.write(get_defect_printos(session, start_index))
 
 
@@ -40,6 +41,6 @@ with requests.Session() as session:
             get_defect_printos_and_write_files(session=session, out_file_name="out"+str(start_index)+".xml", start_index=start_index)
             start_index += 100
 
-        # root1 = etree.fromstring(defect_printos.text.encode('utf-8'))
+        # root1 = etree.fromstring(defect_printos.text)
         # tree1 = etree.ElementTree(root1)
 
