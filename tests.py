@@ -76,5 +76,14 @@ class TestXmlManipulation(unittest.TestCase):
         self.assertEqual("detected-by", root.xpath("/Entities/Entity[3]/Fields/Field[151]")[0].get("Name"))
         self.assertEqual("grupocapgemini-services.netza.perez_hp.com", root.xpath("/Entities/Entity[3]/Fields/Field[151]/Value")[0].text)
 
+        self.assertEqual("defect", root.xpath("Entity[4]")[0].get("Type"))
+
+        self.assertEqual("user-82", root.xpath("/Entities/Entity[4]/Fields/Field[41]")[0].get("Name"))
+        self.assertEqual("Z600 Workstation, windows 10x64", root.xpath("/Entities/Entity[4]/Fields/Field[41]/Value")[0].text)
+
+        self.assertEqual("detected-by", root.xpath("/Entities/Entity[4]/Fields/Field[151]")[0].get("Name"))
+        self.assertEqual("grupocapgemini-services.alberto.lendinez_hp.com", root.xpath("/Entities/Entity[4]/Fields/Field[151]/Value")[0].text)
+
+
 if __name__ == '__main__':
     unittest.main()
