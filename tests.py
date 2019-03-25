@@ -13,10 +13,58 @@ class TestXmlManipulation(unittest.TestCase):
 
         # root.xpath("Entity[1]/Fields/Field[1]")[0].get("Name") equivalent to (but prefered):
         # root.xpath("Entity[1]/Fields/Field[1]/@Name")[0]
+
+        self.assertEqual("defect", root.xpath("Entity[1]")[0].get("Type"))
+
         self.assertEqual("user-template-08", root.xpath("Entity[1]/Fields/Field[1]")[0].get("Name"))
         self.assertEqual("ipalomar", root.xpath("Entity[1]/Fields/Field[1]/Value")[0].text)
 
-        
+        # when quering for an XPath taht does not exists, it returns None type, NOT empty string!
+        self.assertEqual("user-template-07", root.xpath("Entity[1]/Fields/Field[2]")[0].get("Name"))
+        self.assertEqual(None, root.xpath("Entity[1]/Fields/Field[2]/Value")[0].text)
+
+        self.assertEqual("user-template-09", root.xpath("Entity[1]/Fields/Field[3]")[0].get("Name"))
+        self.assertEqual("arturo_domingo", root.xpath("Entity[1]/Fields/Field[3]/Value")[0].text)
+
+        self.assertEqual("has-change", root.xpath("Entity[1]/Fields/Field[4]")[0].get("Name"))
+        self.assertEqual(None, root.xpath("Entity[1]/Fields/Field[4]/Value")[0].text)
+
+        self.assertEqual("user-template-02", root.xpath("Entity[1]/Fields/Field[5]")[0].get("Name"))
+        self.assertEqual(None, root.xpath("Entity[1]/Fields/Field[5]/Value")[0].text)
+
+        self.assertEqual("priority", root.xpath("Entity[1]/Fields/Field[6]")[0].get("Name"))
+        self.assertEqual(None, root.xpath("Entity[1]/Fields/Field[6]/Value")[0].text)
+
+        self.assertEqual("user-39", root.xpath("Entity[1]/Fields/Field[7]")[0].get("Name"))
+        self.assertEqual("3 - Medium", root.xpath("Entity[1]/Fields/Field[7]/Value")[0].text)
+
+        self.assertEqual("status", root.xpath("Entity[1]/Fields/Field[8]")[0].get("Name"))
+        self.assertEqual("Closed", root.xpath("Entity[1]/Fields/Field[8]/Value")[0].text)
+
+        self.assertEqual("closing-date", root.xpath("Entity[1]/Fields/Field[9]")[0].get("Name"))
+        self.assertEqual("2018-10-01", root.xpath("Entity[1]/Fields/Field[9]/Value")[0].text)
+
+        self.assertEqual("name", root.xpath("/Entities/Entity[1]/Fields/Field[49]")[0].get("Name"))
+        self.assertEqual("Print Care Maintenance alerts (PMK alerts) are not displaying the same information on Printcare and Sonar UI Web", root.xpath("/Entities/Entity[1]/Fields/Field[49]/Value")[0].text)
+
+        self.assertEqual("defect", root.xpath("Entity[2]")[0].get("Type"))
+
+        self.assertEqual("user-template-01", root.xpath("/Entities/Entity[2]/Fields/Field[6]")[0].get("Name"))
+        self.assertEqual("TEAM01", root.xpath("/Entities/Entity[2]/Fields/Field[6]/Value")[0].text)
+        self.assertEqual("HP", root.xpath("/Entities/Entity[2]/Fields/Field[6]/Value")[1].text)
+
+        self.assertEqual("user-template-04", root.xpath("/Entities/Entity[2]/Fields/Field[7]")[0].get("Name"))
+        self.assertEqual("ALMCR78B125613", root.xpath("/Entities/Entity[2]/Fields/Field[7]/Value")[0].text)
+
+        self.assertEqual("detected-in-rel", root.xpath("/Entities/Entity[2]/Fields/Field[22]")[0].get("Name"))
+        self.assertEqual(None, root.xpath("/Entities/Entity[2]/Fields/Field[22]/Value")[0].text)
+
+        self.assertEqual("project", root.xpath("/Entities/Entity[2]/Fields/Field[29]")[0].get("Name"))
+        self.assertEqual("NPD-New Products", root.xpath("/Entities/Entity[2]/Fields/Field[29]/Value")[0].text)
+
+        self.assertEqual("user-14", root.xpath("/Entities/Entity[2]/Fields/Field[59]")[0].get("Name"))
+        self.assertEqual("2018-01-02 07:37:24", root.xpath("/Entities/Entity[2]/Fields/Field[59]/Value")[0].text)
+
 
 if __name__ == '__main__':
     unittest.main()
