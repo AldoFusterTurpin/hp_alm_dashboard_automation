@@ -2,13 +2,23 @@ from lxml import etree
 from copy import deepcopy
 
 
-def obtain_xml_string():
-    with open("out1.xml", "r") as in_file:
-        result = in_file.read()
-        return result
+def merge(original_xml, second_xml):
+    '''Copy all the 'Entity' nodes of 'second_xml' to 'original_xml'(as children of 'Entities' node)'''
 
+    # the root of original_xml is the 'Entities node'
+    root_original = etree.fromstring(original_xml.encode('utf-8'))
+    root_second_xml = etree.fromstring(second_xml.encode('utf-8'))
 
-root = etree.fromstring(obtain_xml_string().encode('utf-8'))
-tree = etree.ElementTree(root)
+    # print("root: " + root_original.tag)
+    # print(type(root_original))
 
-child for child in root
+    # the nodes I will insert
+    entity_nodes = root_second_xml.xpath(".//Entity")
+
+    for element in entity_nodes:
+        root_original.append(deepcopy(element))
+
+    ret = etree.tostring(root_original, encoding='utf8', method='xml', pretty_print=False, xml_declaration=False).decode()
+    ret = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' + ret
+
+    return ret

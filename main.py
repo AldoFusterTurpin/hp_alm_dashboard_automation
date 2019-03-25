@@ -28,6 +28,7 @@ with requests.Session() as session:
         session.post(url="https://alm-1.azc.ext.hp.com/qcbin/authentication-point/authenticate",
                      data="<alm-authentication><user>"+username+"</user><password>"+password+"</password></alm-authentication>")
 
+        # check if authenticated (optional)
         # s.get(url="https://alm-1.azc.ext.hp.com/qcbin/rest/is-authenticated",
         #       headers={"Content-Type": "application/xml"})
 
