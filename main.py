@@ -4,28 +4,27 @@ import requests
 
 
 def get_defect_printos(session, start_index: int):
+    payload = {'query': "{user-90['PrintOS']}"}
+
     if start_index is not None:
-        payload = {
-            'query': "{user-90['PrintOS']}",
-            'start-index': str(start_index)
-        }
-    else:
-        payload = {
-            'query': "{user-90['PrintOS']}"
-        }
+        payload['start-index'] = str(start_index)
+
     # important: utf8 encoding
+    print("url params:", end=" ")
     [print(k, v) for k, v in payload.items()]
-    print("*" * 30)
-    response = session.get(url="https://alm-1.azc.ext.hp.com/qcbin/rest/domains/IPG_GIB/projects/LFP_Programs/defects",
-                      params=payload).text.encode('utf8')
-    return response
+    print()
+    url = "https://alm-1.azc.ext.hp.com/qcbin/rest/domains/IPG_GIB/projects/LFP_Programs/defects"
+    response = session.get(url=url, params=payload)
+    print("Response status: {}".format(response.status_code))
+    print("*" * 50)
+    xml_response = response.text.encode('utf8')
+    return xml_response
 
 
 def get_defect_printos_and_write_files(session, out_file_name: str, start_index: int):
     xml = get_defect_printos(session, start_index)
-    out_file = open(out_file_name, "wb")
-    out_file.write(xml)
-    out_file.close()
+    with open(out_file_name, "wb") as out_file:
+        out_file.write(xml)
 
 
 def main():
@@ -51,12 +50,12 @@ def main():
         session.post(url="https://alm-1.azc.ext.hp.com/qcbin/rest/site-session")
 
         start_index = None
-        get_defect_printos_and_write_files(session=session, out_file_name="out" + str(start_index) + ".xml", start_index=start_index)
+        get_defect_printos_and_write_files(session=session, out_file_name="out0.xml", start_index=start_index)
         start_index = 101
         while start_index <= 901:
-            get_defect_printos_and_write_files(session=session, out_file_name="out" + str(start_index) + ".xml", start_index=start_index)
+            get_defect_printos_and_write_files(session=session, out_file_name="out" + str(start_index) + ".xml",
+                                               start_index=start_index)
             start_index += 100
-
 
 
 
