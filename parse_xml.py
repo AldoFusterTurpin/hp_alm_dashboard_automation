@@ -17,7 +17,6 @@ def merge(original_xml, second_xml):
 
     [root_accumulated.append(deepcopy(element)) for element in entity_nodes]
 
-    ret = etree.tostring(root_accumulated, encoding='utf-8', method='xml', pretty_print=False, xml_declaration=False).decode('utf-8')
+    ret = etree.tostring(root_accumulated, encoding='utf-8', method='xml', pretty_print=True, xml_declaration=False).decode('utf-8')
     ret = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' + ret
     return ret
-
