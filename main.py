@@ -10,7 +10,6 @@ def get_defect_printos(session, start_index: int = None):
     if start_index is not None:
         payload['start-index'] = str(start_index)
 
-    # important: utf8 encoding
     print("_"*10)
     print("url params: ")
     [print(k, v) for k, v in payload.items()]
@@ -33,7 +32,7 @@ def get_defect_printos_and_write_file(session, out_file_name: str, start_index: 
     return xml
 
 
-def finsih_action(xml_result):
+def finish_action(xml_result):
     '''Given the final xml ('xml_result') after the requests and modifications, this function indicates what to do with
     the result (write it on disk, send an email or send it to Google drive, etc.)'''
     with open("result.xml", "w", encoding="utf-8") as out_file:
@@ -71,7 +70,8 @@ def main():
             tmp_xml = get_defect_printos(session=session, start_index=start_index)
             result = parse_xml.merge(original_xml=result, second_xml=tmp_xml)
             start_index += 100
-        finsih_action(result)
+
+        finish_action(result)
 
 
 if __name__ == "__main__":
