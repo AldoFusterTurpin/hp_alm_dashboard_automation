@@ -7,8 +7,9 @@ class TestXmlManipulation(unittest.TestCase):
     def test_merge(self):
         original_xml = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Entities TotalResults="995"><Entity Type="defect"><Fields><Field Name="user-template-08"><Value>ipalomar</Value></Field><Field Name="user-template-07"><Value></Value></Field><Field Name="user-template-09"><Value>arturo_domingo</Value></Field><Field Name="name"><Value>Print Care Maintenance alerts (PMK alerts) are not displaying the same information on Printcare and Sonar UI Web</Value></Field></Fields><RelatedEntities/></Entity><Entity Type="defect"><Fields><Field Name="user-102"><Value></Value></Field><Field Name="user-100"><Value></Value></Field></Fields><RelatedEntities/></Entity></Entities>'
         second_xml = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Entities TotalResults="995"><Entity Type="defect"><Fields><Field Name="user-84"><Value></Value></Field><Field Name="name"><Value>Printer maintenance status is not the same in Sonar and PrintCare (and Service Center)</Value></Field><Field Name="has-linkage"><Value>N</Value></Field></Fields><RelatedEntities/></Entity><Entity Type="defect"><Fields><Field Name="user-template-08"><Value>01</Value></Field><Field Name="user-template-07"><Value></Value></Field></Fields><RelatedEntities/></Entity></Entities>'
-        result = parse_xml.merge(original_xml=original_xml, second_xml=second_xml)
+        result = parse_xml.merge(original_xml=original_xml, second_xml=second_xml)  # type str
 
+        # i need to creat an xml tree to query using XPath to test that everything is as expected
         root = etree.fromstring(result.encode('utf-8'))
 
         self.assertEqual("defect", root.xpath("Entity[1]")[0].get("Type"))

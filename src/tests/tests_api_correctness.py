@@ -20,7 +20,9 @@ class TestApiCorrectness(unittest.TestCase):
                 data="<alm-authentication><user>" + username + "</user><password>" + password + "</password></alm-authentication>")
             self.assertEqual(200, response.status_code)
 
-            response = session.get(url="https://alm-1.azc.ext.hp.com/qcbin/rest/is-authenticated", headers={"Content-Type": "application/xml"})
+            # log-in
+            response = session.get(url="https://alm-1.azc.ext.hp.com/qcbin/rest/is-authenticated",
+                                   headers={"Content-Type": "application/xml"})
             self.assertEqual(200, response.status_code)
 
 

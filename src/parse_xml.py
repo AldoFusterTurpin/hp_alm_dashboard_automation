@@ -2,7 +2,7 @@ from lxml import etree
 from copy import deepcopy
 
 
-def merge(original_xml, second_xml):
+def merge(original_xml, second_xml) -> str:
     '''Copy all the 'Entity' nodes of 'second_xml' to 'original_xml'(as children of 'Entities' node)'''
 
     # the root of original_xml is the 'Entities node'

@@ -3,7 +3,7 @@ import os
 from src import parse_xml
 
 
-def get_defect_printos(session, start_index: int = None):
+def get_defect_printos(session, start_index: int = None) -> str:
     payload = {'query': "{user-90['PrintOS']}"}
 
     if start_index is not None:
@@ -17,9 +17,13 @@ def get_defect_printos(session, start_index: int = None):
     [print("{}: {}".format(k, v)) for k, v in payload.items()]
     print("----------")
 
-    response = session.get(url=url,
-                           params=payload)
-    print("Response status: {}".format(response.status_code))
+    response = session.get(url=url, params=payload)
+
+    response_status_code = response.status_code
+    if response_status_code != 200:
+        raise Exception("Error during get_defects_printos. Response status was: {}".format(response_status_code))
+
+    print("Response status: {}".format(response_status_code))
     print("_" * 30)
 
     xml_response = response.text  # type str
@@ -27,16 +31,18 @@ def get_defect_printos(session, start_index: int = None):
     return xml_response
 
 
-def get_defect_printos_and_write_file(session, out_file_name: str, start_index: int = None):
+def get_defect_printos_and_write_file(session, out_file_name: str, start_index: int = None) -> str:
     xml = get_defect_printos(session, start_index)
     with open(out_file_name, "w", encoding="utf-8") as out_file:
         out_file.write(xml)
     return xml
 
 
-def finish_action(xml_result):
+def finish_action(xml_result) -> None:
     '''Given the final xml ('xml_result') after the requests and modifications, this function indicates what to do with
     the result (write it on disk, send an email or send it to Google drive, etc.)'''
+    # print(xml_result)
+
     file_path = os.path.join("..", "output", "result.xml")
     with open(file_path, "w", encoding="utf-8") as out_file:
         out_file.write(xml_result)
@@ -54,18 +60,24 @@ def main():
         # activating authentication for the session
         session.auth = (username, password)
 
-        # post authentication
-        session.post(url="https://alm-1.azc.ext.hp.com/qcbin/authentication-point/authenticate?login-form-required=y",
+        # post authentication SignIn
+        response = session.post(url="https://alm-1.azc.ext.hp.com/qcbin/authentication-point/authenticate?login-form-required=y",
                      data="<alm-authentication><user>" + username + "</user><password>" + password + "</password></alm-authentication>")
+        response_status_code = response.status_code
+        if response_status_code != 200:
+            raise Exception("Error during authentication SignIn. Response status was: {}".format(response_status_code))
 
         # check if authenticated (optional)
         # session.get(url="https://alm-1.azc.ext.hp.com/qcbin/rest/is-authenticated",
         #       headers={"Content-Type": "application/xml"})
 
-        # post log-in
-        session.post(url="https://alm-1.azc.ext.hp.com/qcbin/rest/site-session")
+        # post OpenSession
+        response = session.post(url="https://alm-1.azc.ext.hp.com/qcbin/rest/site-session")
+        response_status_code = response.status_code
+        if response_status_code != 201:
+            raise Exception("Error during OpenSession. Response status was: {}".format(response_status_code))
 
-        # I accumulate the final xml in 'result'
+        # I will accumulate the final xml in 'result'
         result = get_defect_printos(session=session, start_index=None)
 
         # index parameter of the GET requests
