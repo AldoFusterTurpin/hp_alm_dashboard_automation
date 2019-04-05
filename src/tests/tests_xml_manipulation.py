@@ -1,4 +1,4 @@
-import parse_xml
+from src import parse_xml
 from lxml import etree
 import unittest
 
