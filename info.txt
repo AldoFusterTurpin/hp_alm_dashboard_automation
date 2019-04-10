@@ -9,3 +9,16 @@ https://admhelp.microfocus.com/alm/en/12.60/api_refs/REST_TECH_PREVIEW/ALM_REST_
 https://community.microfocus.com/t5/Quality-Center-ALM-User/Error-401-QCSession-cookie-missing-from-request/td-p/956295
 
 http://docs.python-requests.org/en/master/api/#sessionapi
+
+
+
+________________________________________________________________________________________________________________
+this piece of optional code:
+# start code
+# check if authenticated (optional)
+    # session.get(url="https://alm-1.azc.ext.hp.com/qcbin/rest/is-authenticated",
+    #       headers={"Content-Type": "application/xml"})
+# end code
+
+Could go on line 110 in main.py:
+________________________________________________________________________________________________________________
