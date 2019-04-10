@@ -1,6 +1,5 @@
 # built-in
 import datetime
-import os
 import pathlib
 
 # 3rd party
@@ -32,12 +31,11 @@ def get_defect_printos(session, start_index: int = None) -> str:
 
     url = "https://alm-1.azc.ext.hp.com/qcbin/rest/domains/IPG_GIB/projects/LFP_Programs/defects"
     response = session.get(url=url, params=payload)
-    response_status_code = response.status_code
     check_response_status_code(action_name_performed="get_defects_printos",
-                               response_status_code=response_status_code,
+                               response_status_code=response.status_code,
                                expected_status_code=200)
 
-    log_request_info(url=url, payload=payload, response_status_code=response_status_code)
+    log_request_info(url=url, payload=payload, response_status_code=response.status_code)
     xml_response_str = response.text
     return xml_response_str
 
