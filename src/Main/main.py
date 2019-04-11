@@ -6,7 +6,7 @@ import pathlib
 import requests
 
 # user defined
-from src import parse_xml
+from src.Parse_xml import parse_xml
 
 
 def check_response_status_code(action_name_performed, response_status_code, expected_status_code):
@@ -49,7 +49,7 @@ def get_defect_printos_and_write_file(session, out_file_name: str, start_index: 
 
 def read_credentials():
     # credentials_file_path = os.path.join("..", "credentials.txt")
-    credentials_file_path = pathlib.Path("..") / "credentials.txt"
+    credentials_file_path = pathlib.Path("..") / ".." / "credentials.txt"
 
     with open(credentials_file_path, "r", encoding="utf-8") as credentials_file:
         username = credentials_file.readline().strip()
@@ -83,19 +83,26 @@ def finish_action(xml_result) -> None:
     now = datetime.datetime.now()
     file_name = now.strftime("%Y-%m-%d__%H_%M_%S")
 
+    folder_path_str = "../../output"
+
     # create (if doesn't exist) folder where we store the output files
-    pathlib.Path("../output").mkdir(parents=True, exist_ok=True)
+    pathlib.Path(folder_path_str).mkdir(parents=True, exist_ok=True)
+
     extension = ".xml"
-    output_path = pathlib.Path("../output" + "/" + file_name + extension)
+    output_path = pathlib.Path(folder_path_str + "/" + file_name + extension)
 
     with open(output_path, "w+", encoding="utf-8") as out_file:
         out_file.write(xml_result)
 
 
+def create_requests_session():
+    return requests.Session()
+
+
 def main():
     # The Session object allows you to persist certain parameters across requests.
     # It also persists cookies across all requests made from the Session instance
-    session = requests.Session()
+    session = create_requests_session()
     username, password = read_credentials()
 
     # activating authentication for the session
@@ -116,6 +123,8 @@ def main():
         tmp_xml = get_defect_printos(session=session, start_index=start_index)
         result = parse_xml.merge(original_xml=result, second_xml=tmp_xml)
         start_index += 100
+
+    session.close()
 
     finish_action(result)
 

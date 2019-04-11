@@ -10,7 +10,7 @@ https://community.microfocus.com/t5/Quality-Center-ALM-User/Error-401-QCSession-
 
 http://docs.python-requests.org/en/master/api/#sessionapi
 
-
+https://www.programiz.com/python-programming/package
 
 ________________________________________________________________________________________________________________
 this piece of optional code:

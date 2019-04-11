@@ -1,5 +1,10 @@
-from src import parse_xml
+# user defined
+from src.Parse_xml import parse_xml
+
+# 3rd party
 from lxml import etree
+
+# built-in
 import unittest
 
 
@@ -98,6 +103,14 @@ class TestXmlManipulation(unittest.TestCase):
         self.assertEqual("Z600 Workstation, windows 10x64", root.xpath("/Entities/Entity[4]/Fields/Field[41]/Value")[0].text)
         self.assertEqual("detected-by", root.xpath("/Entities/Entity[4]/Fields/Field[151]")[0].get("Name"))
         self.assertEqual("grupocapgemini-services.alberto.lendinez_hp.com", root.xpath("/Entities/Entity[4]/Fields/Field[151]/Value")[0].text)
+
+    def test_get_entities(self):
+        xml = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Entities TotalResults="995"><Entity Type="defect"><Fields><Field Name="user-template-08"><Value>ipalomar</Value></Field><Field Name="user-template-07"><Value></Value></Field><Field Name="user-template-09"><Value>arturo_domingo</Value></Field><Field Name="name"><Value>Print Care Maintenance alerts (PMK alerts) are not displaying the same information on Printcare and Sonar UI Web</Value></Field></Fields><RelatedEntities/></Entity><Entity Type="defect"><Fields><Field Name="user-102"><Value></Value></Field><Field Name="user-100"><Value></Value></Field></Fields><RelatedEntities/></Entity></Entities>'
+        self.assertEqual("995", parse_xml.get_entities_total_results(xml))
+
+    def test_get_entities2(self):
+        xml = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Entities TotalResults="1066"><Entity Type="defect"><Fields><Field Name="user-template-08"><Value>ipalomar</Value></Field></Fields><RelatedEntities/></Entity></Entities>'
+        self.assertEqual("1066", parse_xml.get_entities_total_results(xml))
 
 
 if __name__ == '__main__':
