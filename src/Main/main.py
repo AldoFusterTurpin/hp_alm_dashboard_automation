@@ -14,7 +14,7 @@ def check_response_status_code(action_name_performed, response_status_code, expe
         raise Exception("Error during" + action_name_performed + ".Response status was: {}".format(response_status_code))
 
 
-def log_request_info(url, payload, response_status_code):
+def log_request_info(url, payload, response_status_code) -> None:
     print("_" * 30)
     print("NEW REQUEST: \n url: {}".format(url))
     print("----------\nurl params: ")
@@ -57,7 +57,7 @@ def read_credentials():
     return username, password
 
 
-def sign_in(session, username, password):
+def sign_in(session, username, password) -> None:
     response = session.post(
         url="https://alm-1.azc.ext.hp.com/qcbin/authentication-point/authenticate?login-form-required=y",
         data="<alm-authentication><user>" + username + "</user><password>" + password + "</password></alm-authentication>")
@@ -67,7 +67,7 @@ def sign_in(session, username, password):
                                expected_status_code=200)
 
 
-def open_session(session):
+def open_session(session) -> None:
     '''Action needed after sign-in'''
     response = session.post(url="https://alm-1.azc.ext.hp.com/qcbin/rest/site-session")
 
@@ -109,23 +109,33 @@ def main():
     session.auth = (username, password)
 
     sign_in(session=session, username=username, password=password)
-
     open_session(session=session)
 
     # final xml accumulated in 'result'
     result = get_defect_printos(session=session, start_index=None)
 
+    # the api returns a string
+    total_entities = int(parse_xml.get_entities_total_results(result))
+
+    # the api returns a string
+    Entity_nodes_counter = int(parse_xml.get_number_of_Entity_nodes(result))
+    print("Entity_nodes_counter out while: {}".format(Entity_nodes_counter))
+
     # index parameter of the GET requests
     start_index = 101
 
-    upper_bound = 901
-    while start_index <= upper_bound:
+    while Entity_nodes_counter <= 1001: # this line should be erased and substituted by the one below
+    # while Entity_nodes_counter <= total_entities: # this line should be uncomented, is the good one
         tmp_xml = get_defect_printos(session=session, start_index=start_index)
+
+        Entity_nodes_counter += int(parse_xml.get_number_of_Entity_nodes(tmp_xml))
+        print("Entity_nodes_counter in while: {}".format(Entity_nodes_counter))
+
         result = parse_xml.merge(original_xml=result, second_xml=tmp_xml)
+
         start_index += 100
 
     session.close()
-
     finish_action(result)
 
 

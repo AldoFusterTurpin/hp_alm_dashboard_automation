@@ -104,13 +104,25 @@ class TestXmlManipulation(unittest.TestCase):
         self.assertEqual("detected-by", root.xpath("/Entities/Entity[4]/Fields/Field[151]")[0].get("Name"))
         self.assertEqual("grupocapgemini-services.alberto.lendinez_hp.com", root.xpath("/Entities/Entity[4]/Fields/Field[151]/Value")[0].text)
 
-    def test_get_entities(self):
+    def test_get_entities_total_results(self):
         xml = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Entities TotalResults="995"><Entity Type="defect"><Fields><Field Name="user-template-08"><Value>ipalomar</Value></Field><Field Name="user-template-07"><Value></Value></Field><Field Name="user-template-09"><Value>arturo_domingo</Value></Field><Field Name="name"><Value>Print Care Maintenance alerts (PMK alerts) are not displaying the same information on Printcare and Sonar UI Web</Value></Field></Fields><RelatedEntities/></Entity><Entity Type="defect"><Fields><Field Name="user-102"><Value></Value></Field><Field Name="user-100"><Value></Value></Field></Fields><RelatedEntities/></Entity></Entities>'
         self.assertEqual("995", parse_xml.get_entities_total_results(xml))
 
-    def test_get_entities2(self):
+    def test_get_entities_total_results2(self):
         xml = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Entities TotalResults="1066"><Entity Type="defect"><Fields><Field Name="user-template-08"><Value>ipalomar</Value></Field></Fields><RelatedEntities/></Entity></Entities>'
         self.assertEqual("1066", parse_xml.get_entities_total_results(xml))
+
+    def test_get_number_of_Entity_nodes(self):
+        xml = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Entities TotalResults="1073"></Entities>'
+        self.assertEqual(0, parse_xml.get_number_of_Entity_nodes(xml))
+
+    def test_get_number_of_Entity_nodes2(self):
+        xml = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Entities TotalResults="1073"><Entity Type="defect"><Fields><Field Name="user-template-08"><Value>ipalomar</Value></Field></Fields></Entity></Entities>'
+        self.assertEqual(1, parse_xml.get_number_of_Entity_nodes(xml))
+
+    def test_get_number_of_Entity_nodes3(self):
+        xml = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Entities TotalResults="1073"><Entity Type="defect"><Fields><Field Name="user-template-08"><Value>ipalomar</Value></Field></Fields></Entity><Entity Type="defect"><Fields><Field Name="user-template-08"><Value>ipalomar</Value></Field></Fields></Entity><Entity Type="defect"><Fields><Field Name="user-template-08"><Value>ipalomar</Value></Field></Fields></Entity><Entity Type="defect"><Fields><Field Name="user-template-08"><Value>ipalomar</Value></Field></Fields></Entity><Entity Type="defect"><Fields><Field Name="user-template-08"><Value>ipalomar</Value></Field></Fields></Entity></Entities>'
+        self.assertEqual(5, parse_xml.get_number_of_Entity_nodes(xml))
 
 
 if __name__ == '__main__':

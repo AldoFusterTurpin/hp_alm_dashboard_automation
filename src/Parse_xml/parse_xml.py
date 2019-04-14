@@ -25,3 +25,9 @@ def merge(original_xml, second_xml) -> str:
 def get_entities_total_results(xml) -> str:
     root = etree.fromstring(xml.encode('utf-8'))
     return root.xpath("/Entities")[0].get("TotalResults")
+
+
+def get_number_of_Entity_nodes(xml) -> int:
+    root = etree.fromstring(xml.encode('utf-8'))
+    Entity_list = root.xpath("Entity")
+    return len(Entity_list)

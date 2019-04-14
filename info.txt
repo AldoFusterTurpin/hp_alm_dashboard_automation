@@ -22,3 +22,5 @@ this piece of optional code:
 
 Could go on line 110 in main.py:
 ________________________________________________________________________________________________________________
+
+In python 3.3+, __init__.py files are not necessary !!!!!!
