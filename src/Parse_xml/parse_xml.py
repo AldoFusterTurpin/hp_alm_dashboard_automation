@@ -1,3 +1,4 @@
+# built-in
 from lxml import etree
 from copy import deepcopy
 
@@ -9,9 +10,6 @@ def merge(original_xml, second_xml) -> str:
     root_accumulated = etree.fromstring(original_xml.encode('utf-8'))
     root_second_xml = etree.fromstring(second_xml.encode('utf-8'))
 
-    # print("root: " + root_original.tag)
-    # print(type(root_original))
-
     # the nodes I will insert
     entity_nodes = root_second_xml.xpath("Entity")
 
@@ -22,9 +20,9 @@ def merge(original_xml, second_xml) -> str:
     return ret
 
 
-def get_entities_total_results(xml) -> str:
+def get_entities_total_results(xml) -> int:
     root = etree.fromstring(xml.encode('utf-8'))
-    return root.xpath("/Entities")[0].get("TotalResults")
+    return int(root.xpath("/Entities")[0].get("TotalResults"))
 
 
 def get_number_of_Entity_nodes(xml) -> int:

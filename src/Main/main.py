@@ -15,13 +15,13 @@ def check_response_status_code(action_name_performed, response_status_code, expe
 
 
 def log_request_info(url, payload, response_status_code) -> None:
-    print("_" * 30)
+    print("_" * 50)
     print("NEW REQUEST: \n url: {}".format(url))
     print("----------\nurl params: ")
     [print("{}: {}".format(k, v)) for k, v in payload.items()]
     print("----------")
     print("Response status: {}".format(response_status_code))
-    print("_" * 30)
+    print("_" * 50)
 
 
 def get_defect_printos(session, start_index: int = None) -> str:
@@ -36,8 +36,7 @@ def get_defect_printos(session, start_index: int = None) -> str:
                                expected_status_code=200)
 
     log_request_info(url=url, payload=payload, response_status_code=response.status_code)
-    xml_response_str = response.text
-    return xml_response_str
+    return response.text
 
 
 def get_defect_printos_and_write_file(session, out_file_name: str, start_index: int = None) -> str:
@@ -48,9 +47,7 @@ def get_defect_printos_and_write_file(session, out_file_name: str, start_index: 
 
 
 def read_credentials():
-    # credentials_file_path = os.path.join("..", "credentials.txt")
     credentials_file_path = pathlib.Path("..") / ".." / "credentials.txt"
-
     with open(credentials_file_path, "r", encoding="utf-8") as credentials_file:
         username = credentials_file.readline().strip()
         password = credentials_file.readline().strip()
@@ -80,16 +77,15 @@ def finish_action(xml_result) -> None:
     '''Given the final xml ('xml_result') after the requests and modifications, this function indicates what to do with
     the result (write it on disk, send an email or send it to Google drive, etc.)'''
 
-    now = datetime.datetime.now()
-    file_name = now.strftime("%Y-%m-%d__%H_%M_%S")
-
-    folder_path_str = "../../output"
-
+    out_folder_path_str = "../../output"
     # create (if doesn't exist) folder where we store the output files
-    pathlib.Path(folder_path_str).mkdir(parents=True, exist_ok=True)
+    pathlib.Path(out_folder_path_str).mkdir(parents=True, exist_ok=True)
 
+    # file_name = datetime.datetime.now().strftime("%Y-%m-%d__%H_%M_%S")
+    file_name = "result"
     extension = ".xml"
-    output_path = pathlib.Path(folder_path_str + "/" + file_name + extension)
+
+    output_path = pathlib.Path(out_folder_path_str + "/" + file_name + extension)
 
     with open(output_path, "w+", encoding="utf-8") as out_file:
         out_file.write(xml_result)
@@ -114,22 +110,22 @@ def main():
     # final xml accumulated in 'result'
     result = get_defect_printos(session=session, start_index=None)
 
-    # the api returns a string
-    total_entities = int(parse_xml.get_entities_total_results(result))
+    total_entities = parse_xml.get_entities_total_results(result)
+    # print("total_entities: {}, type: {}".format(total_entities, type(total_entities)))
 
-    # the api returns a string
-    Entity_nodes_counter = int(parse_xml.get_number_of_Entity_nodes(result))
-    print("Entity_nodes_counter out while: {}".format(Entity_nodes_counter))
+    Entity_nodes_counter = parse_xml.get_number_of_Entity_nodes(result)
+    # print("Entity_nodes_counter before while: {}, type: {}".format(Entity_nodes_counter, type(Entity_nodes_counter)))
 
     # index parameter of the GET requests
     start_index = 101
 
-    while Entity_nodes_counter <= 1001: # this line should be erased and substituted by the one below
-    # while Entity_nodes_counter <= total_entities: # this line should be uncomented, is the good one
+    while Entity_nodes_counter < total_entities:
+        # print("{} <= {}".format(Entity_nodes_counter, total_entities))
+        # print(Entity_nodes_counter <= total_entities)
         tmp_xml = get_defect_printos(session=session, start_index=start_index)
 
-        Entity_nodes_counter += int(parse_xml.get_number_of_Entity_nodes(tmp_xml))
-        print("Entity_nodes_counter in while: {}".format(Entity_nodes_counter))
+        Entity_nodes_counter += parse_xml.get_number_of_Entity_nodes(tmp_xml)
+        # print("Entity_nodes_counter in while: {}".format(Entity_nodes_counter))
 
         result = parse_xml.merge(original_xml=result, second_xml=tmp_xml)
 

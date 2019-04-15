@@ -106,11 +106,11 @@ class TestXmlManipulation(unittest.TestCase):
 
     def test_get_entities_total_results(self):
         xml = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Entities TotalResults="995"><Entity Type="defect"><Fields><Field Name="user-template-08"><Value>ipalomar</Value></Field><Field Name="user-template-07"><Value></Value></Field><Field Name="user-template-09"><Value>arturo_domingo</Value></Field><Field Name="name"><Value>Print Care Maintenance alerts (PMK alerts) are not displaying the same information on Printcare and Sonar UI Web</Value></Field></Fields><RelatedEntities/></Entity><Entity Type="defect"><Fields><Field Name="user-102"><Value></Value></Field><Field Name="user-100"><Value></Value></Field></Fields><RelatedEntities/></Entity></Entities>'
-        self.assertEqual("995", parse_xml.get_entities_total_results(xml))
+        self.assertEqual(995, parse_xml.get_entities_total_results(xml))
 
     def test_get_entities_total_results2(self):
         xml = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Entities TotalResults="1066"><Entity Type="defect"><Fields><Field Name="user-template-08"><Value>ipalomar</Value></Field></Fields><RelatedEntities/></Entity></Entities>'
-        self.assertEqual("1066", parse_xml.get_entities_total_results(xml))
+        self.assertEqual(1066, parse_xml.get_entities_total_results(xml))
 
     def test_get_number_of_Entity_nodes(self):
         xml = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Entities TotalResults="1073"></Entities>'
