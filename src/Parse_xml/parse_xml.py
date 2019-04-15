@@ -1,4 +1,3 @@
-# built-in
 from lxml import etree
 from copy import deepcopy
 

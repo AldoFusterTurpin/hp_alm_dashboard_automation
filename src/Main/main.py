@@ -1,11 +1,5 @@
-# built-in
-import datetime
 import pathlib
-
-# 3rd party
 import requests
-
-# user defined
 from src.Parse_xml import parse_xml
 
 

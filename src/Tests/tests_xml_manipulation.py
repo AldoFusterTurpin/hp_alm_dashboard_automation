@@ -1,10 +1,5 @@
-# user defined
 from src.Parse_xml import parse_xml
-
-# 3rd party
 from lxml import etree
-
-# built-in
 import unittest
 
 

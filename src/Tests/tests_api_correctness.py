@@ -1,7 +1,4 @@
-# user defined
 from src.Main.main import read_credentials, open_session, sign_in, create_requests_session
-
-# built-in
 import unittest
 
 
@@ -19,7 +16,7 @@ class TestApiCorrectness(unittest.TestCase):
 
         session.close()
 
-        # there is this trivial assert. But if open_session fails, it will throw an Exception and the test will fail
+        # here is this trivial assert. But if open_session fails, it will throw an Exception and the test will fail
         self.assertEqual(0, 0)
 
 
